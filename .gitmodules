@@ -1,0 +1,9 @@
+[submodule "helppoint-discovery-server"]
+	path = helppoint-discovery-server
+	url = https://github.com/fiap-69aoj-helppoint/helppoint-discovery-server.git
+[submodule "helppoint-gateway"]
+	path = helppoint-gateway
+	url = https://github.com/fiap-69aoj-helppoint/helppoint-gateway.git
+[submodule "helppoint-web"]
+	path = helppoint-web
+	url = https://github.com/fiap-69aoj-helppoint/helppoint-web.git
