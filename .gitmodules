@@ -7,3 +7,6 @@
 [submodule "helppoint-web"]
 	path = helppoint-web
 	url = https://github.com/fiap-69aoj-helppoint/helppoint-web.git
+[submodule "helppoint-product"]
+	path = helppoint-product
+	url = https://github.com/fiap-69aoj-helppoint/helppoint-product.git

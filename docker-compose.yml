@@ -1,3 +1,73 @@
 version: '3'
 
 services:
+
+  kafka:
+    container_name: kafka
+    build: 
+      context: ./kafka/
+      dockerfile: ./Dockerfile
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    networks:
+      - custom_net
+    environment:
+      - ADVERTISED_HOST=localhost
+
+  zipkin:
+    container_name: zipkin
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - custom_net
+
+  discovery-server:
+    container_name: discovery-server
+    build: 
+      context: ./helppoint-discovery-server/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - custom_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 1m
+      timeout: 10s
+      retries: 5
+
+  product:
+    container_name: product
+    build: 
+      context: ./helppoint-product/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8092:8092"
+    networks:
+      - custom_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8092/actuator/health"]
+      interval: 1m
+      timeout: 10s
+      retries: 5
+    depends_on:
+      - discovery-server
+
+  gateway:
+    container_name: gateway
+    build: 
+      context: ./helppoint-gateway/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8091:8091"
+    networks:
+      - custom_net
+    depends_on:
+      - discovery-server
+      - product
+
+networks:
+  custom_net:
+    driver: bridge
