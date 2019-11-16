@@ -2,8 +2,19 @@ version: '3'
 
 services:
 
-  kafka:
-    container_name: kafka
+  helppoint-mysql:
+    container_name: helppoint-mysql
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    networks:
+      - helppoint-custom-net
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=helppoint-product
+
+  helppoint-kafka:
+    container_name: helppoint-kafka
     build: 
       context: ./kafka/
       dockerfile: ./Dockerfile
@@ -11,45 +22,28 @@ services:
       - "2181:2181"
       - "9092:9092"
     networks:
-      - custom_net
+      - helppoint-custom-net
     environment:
       - ADVERTISED_HOST=localhost
 
-  zipkin:
-    container_name: zipkin
+  helppoint-zipkin:
+    container_name: helppoint-zipkin
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
     networks:
-      - custom_net
+      - helppoint-custom-net
 
-  discovery-server:
-    container_name: discovery-server
+  helppoint-discovery-server:
+    container_name: helppoint-discovery-server
     build: 
       context: ./helppoint-discovery-server/
       dockerfile: ./Dockerfile
     ports:
       - "8761:8761"
     networks:
-      - custom_net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
-      interval: 1m
-      timeout: 10s
-      retries: 5
-
-  gateway:
-    container_name: gateway
-    build: 
-      context: ./helppoint-gateway/
-      dockerfile: ./Dockerfile
-    ports:
-      - "8091:8091"
-    networks:
-      - custom_net
-    depends_on:
-      - discovery-server
+      - helppoint-custom-net
 
 networks:
-  custom_net:
+  helppoint-custom-net:
     driver: bridge
