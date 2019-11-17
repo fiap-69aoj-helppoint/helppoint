@@ -10,3 +10,12 @@
 [submodule "helppoint-product"]
 	path = helppoint-product
 	url = https://github.com/fiap-69aoj-helppoint/helppoint-product.git
+[submodule "helppoint-configuration-server"]
+	path = helppoint-configuration-server
+	url = https://github.com/fiap-69aoj-helppoint/helppoint-configuration-server.git
+[submodule "helppoint-salesman"]
+	path = helppoint-salesman
+	url = https://github.com/fiap-69aoj-helppoint/helppoint-salesman.git
+[submodule "helppoint-client"]
+	path = helppoint-client
+	url = https://github.com/fiap-69aoj-helppoint/helppoint-client.git

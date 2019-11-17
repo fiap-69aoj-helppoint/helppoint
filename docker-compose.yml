@@ -34,6 +34,19 @@ services:
     networks:
       - helppoint-custom-net
 
+  helppoint-configuration-server:
+    container_name: helppoint-configuration-server
+    build: 
+      context: ./helppoint-configuration-server/
+      dockerfile: ./Dockerfile
+    ports:
+      - "9091:9091"
+    networks:
+      - helppoint-custom-net
+    depends_on:
+      - helppoint-discovery-server
+      - helppoint-zipkin
+
   helppoint-discovery-server:
     container_name: helppoint-discovery-server
     build: 
@@ -51,6 +64,34 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "8092:8092"
+    networks:
+      - helppoint-custom-net
+    depends_on:
+      - helppoint-discovery-server
+      - helppoint-mysql
+      - helppoint-zipkin
+
+  helppoint-client:
+    container_name: helppoint-client
+    build: 
+      context: ./helppoint-client/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8090:8090"
+    networks:
+      - helppoint-custom-net
+    depends_on:
+      - helppoint-discovery-server
+      - helppoint-mysql
+      - helppoint-zipkin
+
+  helppoint-salesman:
+    container_name: helppoint-salesman
+    build: 
+      context: ./helppoint-salesman/
+      dockerfile: ./Dockerfile
+    ports:
+      - "8091:8091"
     networks:
       - helppoint-custom-net
     depends_on:
